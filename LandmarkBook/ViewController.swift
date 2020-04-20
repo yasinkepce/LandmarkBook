@@ -12,6 +12,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     @IBOutlet weak var myTableView: UITableView!
     
+    
+    var choosenLandmarkName = ""
+    var choosenLandmarkImage = UIImage()
+    
     var landmarkNames = [String]()
     var landmarkImages = [UIImage]()
     
@@ -25,11 +29,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         
         
-        landmarkNames.append("TOKAT SAAT KULESi")
+        landmarkNames.append("TOKAT SAAT KULESİ")
         landmarkNames.append("LONDON EYE")
         landmarkNames.append("STATUE OF LIBERTY")
         landmarkNames.append("KREMLIN")
-        landmarkNames.append("EYFEL KULESI")
+        landmarkNames.append("EYFEL KULESİ")
         
         
         landmarkImages.append(UIImage(named: "saatkulesi")!)
@@ -37,6 +41,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         landmarkImages.append(UIImage(named: "liberty")!)
         landmarkImages.append(UIImage(named: "kremlin")!)
         landmarkImages.append(UIImage(named: "eyfel")!)
+        
+        navigationItem.title = "LANDMARK BOOK" //Uygulamanın Başlığını Değiştirdik
     }
     
    
@@ -47,6 +53,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         landmarkImages.remove(at: indexPath.row)
         myTableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
         
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) { //tıklanınca çalışıyor
+        
+        
+        choosenLandmarkName = landmarkNames[indexPath.row]
+        choosenLandmarkImage = landmarkImages[indexPath.row]
+        
+        performSegue(withIdentifier: "toImageViewController", sender: nil)
     }
     
     
@@ -61,6 +76,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return landmarkNames.count // satır sayısını belirliyoruz.
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {  //Segue'ye veri aktarımı
+        if segue.identifier == "toImageViewController"{
+         
+            let toSegueVC = segue.destination as! ImageViewController
+            
+            toSegueVC.selectedLandmarkName = choosenLandmarkName
+            toSegueVC.selectedLandmarkImage = choosenLandmarkImage
+        }
     }
 
 
